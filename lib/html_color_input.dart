@@ -27,15 +27,15 @@ class HtmlColorInput extends StatefulWidget {
 
   /// The width of the color input element.
   ///
-  /// If this is not specified, the default width will be 50.0. 
-  /// 
+  /// If this is not specified, the default width will be 50.0.
+  ///
   /// See: [_defaultSize].
   final double? width;
 
   /// The height of the color input element.
   ///
-  /// If this is not specified, the default height will be 27.0. 
-  /// 
+  /// If this is not specified, the default height will be 27.0.
+  ///
   /// See: [_defaultSize].
   final double? height;
 
@@ -59,7 +59,8 @@ class _HtmlColorInputState extends State<HtmlColorInput> {
   static const colorInputElementType = 'color';
   static const oneHundredPercent = '100%';
 
-  final viewType = 'html_color_input';
+  /// Unique identifier for the color input element.
+  late String viewType = DateTime.timestamp().toIso8601String();
 
   @override
   Widget build(BuildContext context) {
