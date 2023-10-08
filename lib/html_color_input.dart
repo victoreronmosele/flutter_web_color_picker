@@ -8,6 +8,8 @@ import 'dart:ui_web' as ui_web;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:html_color_input/util.dart';
+import 'package:uuid/uuid.dart';
+
 
 /// The default border box dimension of the color input element as rendered by Chrome
 /// and Edge.
@@ -60,7 +62,7 @@ class _HtmlColorInputState extends State<HtmlColorInput> {
   static const oneHundredPercent = '100%';
 
   /// Unique identifier for the color input element.
-  late String viewType = DateTime.timestamp().toIso8601String();
+  final String viewType =  const Uuid().v4();
 
   @override
   Widget build(BuildContext context) {
