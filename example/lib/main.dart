@@ -35,8 +35,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  static const initialColor = Colors.deepPurple;
+  static const initialColor = Color(0xff40e0d0);
 
+  Color previewTextColor = initialColor;
   Color textColor = initialColor;
 
   @override
@@ -46,31 +47,65 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            _getEventDescriptionText(
+              event: 'onInput',
+              supportingText: 'is called each time you select a color.',
+              color: previewTextColor,
+            ),
+            const SizedBox(
+              height: 120.0,
+            ),
             HtmlColorInput(
               initialColor: textColor,
               width: 100,
               height: 50,
               onInput: (color, event) {
                 setState(() {
-                  textColor = color;
+                  previewTextColor = color;
                 });
               },
               onChange: (color, event) {
-                print('Changed color: $color');
+                setState(() {
+                  textColor = color;
+                });
               },
             ),
             const SizedBox(
-              height: 20.0,
+              height: 120.0,
             ),
-            SelectableText(
-              'The quick brown fox jumps over the lazy dog.',
-              style: TextStyle(
-                fontSize: 20.0,
-                color: textColor,
-              ),
+            _getEventDescriptionText(
+              event: 'onChange',
+              supportingText: 'is called once the color picker is closed.',
+              color: textColor,
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _getEventDescriptionText({
+    required String event,
+    required String supportingText,
+    required Color color,
+  }) {
+    return SelectableText.rich(
+      TextSpan(
+        text: event,
+        style: TextStyle(
+          fontSize: 20.0,
+          color: color,
+          decoration: TextDecoration.underline,
+          decorationColor: color,
+        ),
+        children: [
+          TextSpan(
+            text: ' $supportingText',
+            style: const TextStyle(
+              decoration: TextDecoration.none,
+            ),
+          ),
+        ],
       ),
     );
   }
