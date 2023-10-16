@@ -1,7 +1,8 @@
 name: html_color_input
-description: A new Flutter package project.
-version: 0.0.1
-homepage:
+description: This package allows you use the default browser color picker in your Flutter Web app. It displays the HTML color input element and allows you listen to the color changes.
+version: 1.0.0
+repository: https://github.com/victoreronmosele/flutter_html_color_input
+issue_tracker: https://github.com/victoreronmosele/flutter_html_color_input/issues
 
 environment:
   sdk: ">=3.1.3 <4.0.0"
@@ -10,11 +11,27 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  mocktail: ^1.0.1
+  universal_html: ^2.2.4
   uuid: ^4.1.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  integration_test:
+    sdk: flutter
   flutter_lints: ^2.0.0
+  test: 
 
 flutter:
+  
+topics:
+  - html
+  - color-picker
+  - widget
+  - color
+  - web
+
+platforms:
+  - web
+
