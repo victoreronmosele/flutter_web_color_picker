@@ -27,14 +27,14 @@ typedef ColorInputEventCallback = void Function(Color color, html.Event event);
 ///
 /// ```dart
 /// HtmlColorInput(
-///   initialColor: Colors.deepPurple,
-///   width: 100,
-///   height: 50,
-///   onInput: (color, event) {
-///     print('onInput: $color');
+///   initialColor: Colors.red,
+///   width: 60.0,
+///   height: 30.0,
+///   onInput: (selectedColor, event) {
+///     print('Color selected: $selectedColor');
 ///   },
-///   onChange: (color, event) {
-///    print('onChange: $color');
+///   onChange: (confirmedColor, event) {
+///     print('Color confirmed: $confirmedColor');
 ///   },
 /// )
 /// ```
