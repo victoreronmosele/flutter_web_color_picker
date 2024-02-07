@@ -1,4 +1,5 @@
-/// A Flutter widget that displays the HTML color input element for use in  Flutter Web apps.
+/// A Flutter widget that displays the HTML color input element for use in Flutter
+/// Web apps.
 library html_color_input;
 
 /// The mock_ui_web.dart file is used to prevent builds from failing on non-web
@@ -11,13 +12,15 @@ import 'package:html_color_input/src/util.dart';
 import 'package:uuid/uuid.dart';
 import 'package:universal_html/html.dart' as html;
 
-/// The default border box dimension of the color input element as rendered by Chrome
-/// and Edge.
+/// The default border box dimension of the color input element as rendered by
+/// Chrome and Edge.
 ///
 /// See: [Color Inputs: A Deep Dive into Cross-Browser Differences | Css Tricks](https://css-tricks.com/color-inputs-a-deep-dive-into-cross-browser-differences/#:~:text=the%20border%2Dbox%20is%2050pxx27px%20in%20Chrome%20and%20Edge)
 const defaultSize = Size(50.0, 27.0);
 
-/// Signature for callbacks for color input element's events: [HtmlColorInput.onInput] and [HtmlColorInput.onChange].
+/// Signature for the callback for color input element's events:
+/// - [_HtmlColorInput.onInput] and
+/// - [_HtmlColorInput.onChange].
 typedef ColorInputEventCallback = void Function(Color color, html.Event event);
 
 /// A Flutter widget that displays the HTML color input element for use in Flutter
@@ -40,7 +43,7 @@ typedef ColorInputEventCallback = void Function(Color color, html.Event event);
 /// ```
 ///
 /// See: [MDN Documentation: HTML Color Input Element Overview](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/color)
-class HtmlColorInput extends StatefulWidget {
+class WebColorPicker extends StatefulWidget {
   /// The initial color of the color input element as rendered by the browser.
   ///
   /// If this is not specified, the default color will be black.
@@ -70,29 +73,54 @@ class HtmlColorInput extends StatefulWidget {
   /// when you confirm a color selection by dismissing the color picker.
   final ColorInputEventCallback? onChange;
 
-  /// Creates a Flutter widget that displays the HTML color input element for use in Flutter Web apps.
+  /// A function that returns a widget to be used creating a custom color picker
+  /// selector.
+  ///
+  /// The widget returned by the function will be displayed instead of the
+  /// default color picker selector.
+  final WidgetBuilder? builder;
+
+  /// Creates a Flutter widget that displays the HTML color input element for use
+  /// in Flutter Web apps.
   ///
   /// See: [MDN Documentation: HTML <input type="color"> Element Overview](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/color)
   // ignore: prefer_const_constructors_in_immutables
-  HtmlColorInput({
+  WebColorPicker({
     super.key,
     this.initialColor,
     this.width,
     this.height,
     this.onInput,
     this.onChange,
-  }) : assert(kIsWeb, 'HtmlColorInput can only be used in Flutter Web apps.');
+  })  : assert(kIsWeb, 'HtmlColorInput can only be used in Flutter Web apps.'),
+        builder = null;
+
+  /// Creates a Flutter widget that displays a custom color picker selector for
+  /// the HTML color input element for use in Flutter Web apps.
+  ///
+  /// Use this instead of the default constructor when you want to display a
+  /// custom color picker seletor widget.
+  const WebColorPicker.builder({
+    super.key,
+    this.initialColor,
+    this.onInput,
+    this.onChange,
+    required this.builder,
+  })  : assert(kIsWeb, 'HtmlColorInput can only be used in Flutter Web apps.'),
+        width = null,
+        height = null;
 
   @override
-  State<HtmlColorInput> createState() => _HtmlColorInputState();
+  State<WebColorPicker> createState() => _WebColorPickerState();
 }
 
-class _HtmlColorInputState extends State<HtmlColorInput> {
+class _WebColorPickerState extends State<WebColorPicker> {
   static const colorInputElementType = 'color';
   static const oneHundredPercent = '100%';
 
   /// Unique identifier for the color input element.
   final String viewType = const Uuid().v4();
+  final inputElement = html.InputElement(type: colorInputElementType);
 
   @override
   void initState() {
@@ -105,8 +133,6 @@ class _HtmlColorInputState extends State<HtmlColorInput> {
   /// the event listeners for the color input element.
   void registerColorInputViewAndSetUpListeners() {
     platformViewRegistry.registerViewFactory(viewType, (int viewId) {
-      final inputElement = html.InputElement(type: colorInputElementType);
-
       final initialColor = widget.initialColor;
 
       if (initialColor != null) {
@@ -139,18 +165,44 @@ class _HtmlColorInputState extends State<HtmlColorInput> {
         ..width = oneHundredPercent
         ..height = oneHundredPercent;
 
+      inputElement.onClick.listen((event) {
+        print('Color input element clicked');
+      });
+
       return inputElement;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: widget.width ?? defaultSize.width,
-      height: widget.height ?? defaultSize.height,
-      child: HtmlElementView(
-        viewType: viewType,
-      ),
+    final builder = widget.builder;
+
+    final htmlColorInput = HtmlElementView(
+      viewType: viewType,
     );
+
+    return builder == null
+        ? SizedBox(
+            width: widget.width ?? defaultSize.width,
+            height: widget.height ?? defaultSize.height,
+            child: htmlColorInput,
+          )
+        : Stack(
+            children: [
+              SizedBox(
+                width: 0.1,
+                height: 0.1,
+                child: htmlColorInput,
+              ),
+              GestureDetector(
+                onTap: () {
+                  inputElement.click();
+                },
+                child: builder.call(
+                  context,
+                ),
+              ),
+            ],
+          );
   }
 }
