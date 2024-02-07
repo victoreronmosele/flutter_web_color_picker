@@ -23,6 +23,14 @@ const defaultSize = Size(50.0, 27.0);
 /// - [_HtmlColorInput.onChange].
 typedef ColorInputEventCallback = void Function(Color color, html.Event event);
 
+/// Signature for a function that creates a custom color picker selector for a
+/// given color.
+///
+/// Used when you want to display a custom color picker widget instead of the
+/// default color picker.
+typedef CustomColorPickerSelectorBuilder = Widget Function(
+    BuildContext context, Color? color);
+
 /// A Flutter widget that displays the HTML color input element for use in Flutter
 /// Web apps.
 ///
@@ -78,7 +86,7 @@ class WebColorPicker extends StatefulWidget {
   ///
   /// The widget returned by the function will be displayed instead of the
   /// default color picker selector.
-  final WidgetBuilder? builder;
+  final CustomColorPickerSelectorBuilder? builder;
 
   /// Creates a Flutter widget that displays the HTML color input element for use
   /// in Flutter Web apps.
@@ -181,6 +189,8 @@ class _WebColorPickerState extends State<WebColorPicker> {
       viewType: viewType,
     );
 
+    final inputElementValue = inputElement.value;
+
     return builder == null
         ? SizedBox(
             width: widget.width ?? defaultSize.width,
@@ -200,6 +210,9 @@ class _WebColorPickerState extends State<WebColorPicker> {
                 },
                 child: builder.call(
                   context,
+                  inputElementValue == null
+                      ? null
+                      : hexStringToColor(inputElementValue),
                 ),
               ),
             ],
