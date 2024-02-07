@@ -130,6 +130,12 @@ class _WebColorPickerState extends State<WebColorPicker> {
   final String viewType = const Uuid().v4();
   final inputElement = html.InputElement(type: colorInputElementType);
 
+  /// The currently selected color.
+  ///
+  /// This should only be updated when the color input element's `onInput` event
+  /// is fired.
+  final selectedColor = ValueNotifier<Color?>(null);
+
   @override
   void initState() {
     super.initState();
@@ -154,6 +160,8 @@ class _WebColorPickerState extends State<WebColorPicker> {
           final color = hexStringToColor(inputElementValue);
 
           widget.onInput?.call(color, event);
+
+          selectedColor.value = color;
         }
       });
 
@@ -173,10 +181,6 @@ class _WebColorPickerState extends State<WebColorPicker> {
         ..width = oneHundredPercent
         ..height = oneHundredPercent;
 
-      inputElement.onClick.listen((event) {
-        print('Color input element clicked');
-      });
-
       return inputElement;
     });
   }
@@ -189,8 +193,6 @@ class _WebColorPickerState extends State<WebColorPicker> {
       viewType: viewType,
     );
 
-    final inputElementValue = inputElement.value;
-
     return builder == null
         ? SizedBox(
             width: widget.width ?? defaultSize.width,
@@ -198,22 +200,31 @@ class _WebColorPickerState extends State<WebColorPicker> {
             child: htmlColorInput,
           )
         : Stack(
+            alignment: Alignment.center,
             children: [
-              SizedBox(
-                width: 0.1,
-                height: 0.1,
-                child: htmlColorInput,
-              ),
-              GestureDetector(
-                onTap: () {
-                  inputElement.click();
-                },
-                child: builder.call(
-                  context,
-                  inputElementValue == null
-                      ? null
-                      : hexStringToColor(inputElementValue),
+              Opacity(
+                opacity: 0.009,
+                child: SizedBox(
+                  width: 0.01,
+                  height: 0.01,
+                  child: htmlColorInput,
                 ),
+              ),
+              Center(
+                child: ValueListenableBuilder<Color?>(
+                    valueListenable: selectedColor,
+                    builder: (context, selectedColor, child) {
+                      return GestureDetector(
+                        behavior: HitTestBehavior.translucent,
+                        onTap: () {
+                          inputElement.click();
+                        },
+                        child: builder.call(
+                          context,
+                          selectedColor,
+                        ),
+                      );
+                    }),
               ),
             ],
           );
