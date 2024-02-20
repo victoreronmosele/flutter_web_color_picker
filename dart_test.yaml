@@ -1,0 +1,2 @@
+tags:
+    non_web: { test_on: "!browser" }
