@@ -1,57 +1,97 @@
 
-A Flutter web widget for integrating the default browser color pickers seamlessly.
+A Flutter widget that displays the native web color picker for browsers for use in Flutter Web apps.
 
-Only supports Flutter web.
+> [!NOTE]
+> This package supports only Flutter web.
+
 
 ## Features
 
 - **Default Browser Color Picker**: Uses the built-in color picker of web browsers.
-- **Callbacks for Color Change Events**: Get notified when a color is selected or confirmed.
-- **Customizable Appearance**: Adjust the dimensions to fit your design.
+- **Callbacks for Color Change Events**: Notifies you when a color is selected or confirmed.
+- **Customizable Selector Appearance**: Allows you to display a custom widget as the color picker selector.
 
 ## Usage
 
-To use the `html_color_input` package in your Flutter Web application, follow these steps:
+To use the `web_color_picker` package in your Flutter Web application, follow these steps:
 
 ### 1. Import the Package
 
-First, make sure to add `html_color_input` to your `pubspec.yaml` dependencies. Then, import it in your Dart code:
+First, make sure to add `web_color_picker` to your `pubspec.yaml` dependencies. Then, import it in your Dart code:
 
 ```dart
-import 'package:html_color_input/html_color_input.dart';
+import 'package:web_color_picker/web_color_picker.dart';
 ```
 
-### 2. Using `HtmlColorInput` Widget
+### 2. Using The `WebColorPicker` Widget
 
-You can add the `HtmlColorInput` widget to your Flutter app just like any other widget:
+#### To Display A Custom Color Picker Selector
+
+Use the `WebColorPicker.builder` constructor to display a custom color picker selector provided by the `builder` parameter.
+
+Tapping on the custom color picker will open the browser's color picker.
+
+
+An example showing how to use an `ElevatedButton` as the custom color picker selector:
+
+<img src="screenshots/web_color_picker_dot_builder.gif" alt="A gif showing how to use an `ElevatedButton` as the custom color picker selector" width="50%">
 
 ```dart
-HtmlColorInput(
+WebColorPicker.builder(
+  initialColor: textColor,
+  builder: (context, selectedColor) {
+    return ElevatedButton(
+      onPressed: () {
+        print('ElevatedButton pressed');
+      },
+      style: ElevatedButton.styleFrom(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 8,
+          vertical: 12,
+        ),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: 20,
+            height: 20,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              color: selectedColor,
+            ),
+          ),
+          const SizedBox(
+            width: 8,
+          ),
+          Text(
+            'Select color',
+          ),
+        ],
+      ),
+    );
+  },
+)
+```
+
+#### To Display The Default Color Picker Selector
+
+Use the `WebColorPicker` constructor to display the browser's default color picker selector.
+
+An example showing how to use the default color picker selector:
+
+<img src="screenshots/web_color_picker.gif" alt="A gif showing how to use the default color picker selector" width="50%">
+
+```dart
+WebColorPicker(
   initialColor: Colors.red,
   width: 60.0,
   height: 30.0,
-  onInput: (selectedColor, event) {
-    print('Color selected: $selectedColor');
-  },
-  onChange: (confirmedColor, event) {
-    print('Color confirmed: $confirmedColor');
-  },
 )
 ```
 
-### 3. Customize Appearance
 
-You can adjust the width and height of the widget to better fit within your application's design:
-
-```dart
-HtmlColorInput(
-  width: 100.0,
-  height: 50.0,
-  // ... other properties ...
-)
-```
-
-### 4. Handle Color Change Events
+### 3. Handle Color Change Events
 
 There are two main callbacks you can handle:
 
@@ -60,22 +100,33 @@ There are two main callbacks you can handle:
 
 Each of these callbacks provides the selected `Color` and the corresponding HTML event:
 
+An example demonstrating the color picker events using the default color picker selector and 
+a custom color picker selector:
+
+<img src="screenshots/web_color_picker_events_hq.gif" alt="A gif demonstrating the color picker events using the default color picker selector and a custom color picker selector" width="50%">
+
 ```dart
-HtmlColorInput(
+WebColorPicker(
+  initialColor: textColor,
   onInput: (color, event) {
-    print('Color selected: $color');
+    setState(() {
+      previewTextColor = color;
+    });
   },
   onChange: (color, event) {
-    print('Color confirmed: $color');
+    setState(() {
+      textColor = color;
+    });
   },
-  // ... other properties ...
-)
+  // ... other properties
+),
 ```
 
+See the [example](example) directory for a complete example.
 
 ## Resources
 
-For further understanding and insights on how the HTML color input works, you can refer to the following resources:
+For more understanding on how the HTML color input (which this package uses) works, check out the following:
 
 - [MDN Documentation: `<input type="color">`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/color): An in-depth overview of the HTML color input element.
   
@@ -83,4 +134,8 @@ For further understanding and insights on how the HTML color input works, you ca
 
 - [Color Inputs: A Deep Dive into Cross-Browser Differences | CSS-Tricks](https://css-tricks.com/color-inputs-a-deep-dive-into-cross-browser-differences/): An article that delves into the cross-browser differences of color inputs.
 
+### Apps Using This Library
 
+- [Flutter Gradient Generator](https://fluttergradientgenerator.com) - An online tool for creating and customizing gradients for use in Flutter applications. 
+
+  Check it out on [GitHub](https://github.com/victoreronmosele/flutter_gradient_generator).

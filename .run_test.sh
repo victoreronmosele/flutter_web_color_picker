@@ -14,7 +14,7 @@ else
 fi
 
 # Running Chrome tests
-echo -e "🚀 Starting tests on Chrome...\n"
+echo -e "🚀 Starting tests on Chrome (web)...\n"
 flutter test --platform chrome 
 if [ $? -eq 0 ]; then
     echo -e "\n✅ Chrome tests completed successfully!\n"
@@ -23,8 +23,8 @@ else
 fi
 
 # Running Integration tests
-echo -e "\n🚀 Starting integration tests...\n"
-flutter run integration_test/html_color_input_test.dart -d chrome --web-renderer html
+echo -e "\n🚀 Starting integration tests (web)...\n"
+flutter run integration_test/web_color_picker_test.dart -d chrome --web-renderer html
 if [ $? -eq 0 ]; then
     echo -e "\n✅ Integration tests completed successfully!\n"
 else

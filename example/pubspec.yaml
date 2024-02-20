@@ -1,5 +1,5 @@
 name: example
-description: An example project demonstrating how to use the html_color_input package.
+description: An example project demonstrating how to use the web_color_picker package.
 publish_to: 'none' 
 version: 0.0.1
 
@@ -9,7 +9,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  html_color_input: 
+  web_color_picker: 
     path: ../
 
 dev_dependencies:
