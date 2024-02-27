@@ -25,16 +25,17 @@ import 'package:web_color_picker/web_color_picker.dart';
 
 ### 2. Using The `WebColorPicker` Widget
 
-#### To Display A Custom Color Picker Selector
+**To Display A Custom Color Picker Selector:**
 
 Use the `WebColorPicker.builder` constructor to display a custom color picker selector provided by the `builder` parameter.
 
 Tapping on the custom color picker will open the browser's color picker.
 
 
-An example showing how to use an `ElevatedButton` as the custom color picker selector:
+Here's an example showing how to use an `ElevatedButton` as the custom color picker selector:
 
-<img src="screenshots/web_color_picker_dot_builder.gif" alt="A gif showing how to use an `ElevatedButton` as the custom color picker selector" width="50%">
+<img src="https://github.com/victoreronmosele/flutter_web_color_picker/blob/main/screenshots/web_color_picker_dot_builder.gif?raw=true" alt="A gif showing how to use an `ElevatedButton` as the custom color picker selector">
+
 
 ```dart
 WebColorPicker.builder(
@@ -74,13 +75,13 @@ WebColorPicker.builder(
 )
 ```
 
-#### To Display The Default Color Picker Selector
+**To Display The Default Color Picker Selector:**
 
 Use the `WebColorPicker` constructor to display the browser's default color picker selector.
 
-An example showing how to use the default color picker selector:
+Here's an example showing how to use the default color picker selector:
 
-<img src="screenshots/web_color_picker.gif" alt="A gif showing how to use the default color picker selector" width="50%">
+<img src="https://github.com/victoreronmosele/flutter_web_color_picker/blob/main/screenshots/web_color_picker.gif?raw=true" alt="A gif showing how to use the default color picker selector">
 
 ```dart
 WebColorPicker(
@@ -89,8 +90,6 @@ WebColorPicker(
   height: 30.0,
 )
 ```
-
-
 ### 3. Handle Color Change Events
 
 There are two main callbacks you can handle:
@@ -103,7 +102,7 @@ Each of these callbacks provides the selected `Color` and the corresponding HTML
 An example demonstrating the color picker events using the default color picker selector and 
 a custom color picker selector:
 
-<img src="screenshots/web_color_picker_events_hq.gif" alt="A gif demonstrating the color picker events using the default color picker selector and a custom color picker selector" width="50%">
+<img src="https://github.com/victoreronmosele/flutter_web_color_picker/blob/main/screenshots/web_color_picker_events_hq.gif?raw=true" alt="A gif demonstrating the color picker events using the default color picker selector and a custom color picker selector">
 
 ```dart
 WebColorPicker(
@@ -137,5 +136,4 @@ For more understanding on how the HTML color input (which this package uses) wor
 ### Apps Using This Library
 
 - [Flutter Gradient Generator](https://fluttergradientgenerator.com) - An online tool for creating and customizing gradients for use in Flutter applications. 
-
-  Check it out on [GitHub](https://github.com/victoreronmosele/flutter_gradient_generator).
+Check it out on [GitHub](https://github.com/victoreronmosele/flutter_gradient_generator).
