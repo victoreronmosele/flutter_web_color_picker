@@ -1,6 +1,6 @@
 name: web_color_picker
 description: This package allows you use the native web browser color picker in your Flutter Web app. 
-version: 1.0.0
+version: 1.0.2
 repository: https://github.com/victoreronmosele/flutter_web_color_picker
 issue_tracker: https://github.com/victoreronmosele/flutter_web_color_picker/issues
 
