@@ -12,6 +12,8 @@ import 'package:web_color_picker/src/util.dart';
 import 'package:uuid/uuid.dart';
 import 'package:universal_html/html.dart' as html;
 
+export 'package:universal_html/html.dart' show Event;
+
 /// The default border box dimension of the color input element as rendered by
 /// Chrome and Edge.
 ///
