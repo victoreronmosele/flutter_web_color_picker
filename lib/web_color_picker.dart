@@ -1,6 +1,6 @@
 /// A Flutter widget that displays the native web color picker for browsers for
 /// use in Flutter Web apps.
-library web_color_picker;
+library;
 
 /// The mock_ui_web.dart file is used to prevent builds from failing on non-web
 /// platforms.
@@ -8,11 +8,12 @@ import 'dart:ui_web' if (dart.library.io) 'src/mock_ui_web.dart';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:web/web.dart' if (dart.library.io) 'src/mock_web/web.dart';
 import 'package:web_color_picker/src/util.dart';
 import 'package:uuid/uuid.dart';
-import 'package:universal_html/html.dart' as html;
 
-export 'package:universal_html/html.dart' show Event;
+export 'package:web/web.dart' if (dart.library.io) 'src/mock_web/web.dart'
+    show Event;
 
 /// The default border box dimension of the color input element as rendered by
 /// Chrome and Edge.
@@ -23,7 +24,7 @@ const defaultSize = Size(50.0, 27.0);
 /// Signature for the callback for color input element's events:
 /// - [WebColorPicker.onInput] and
 /// - [WebColorPicker.onChange].
-typedef ColorInputEventCallback = void Function(Color color, html.Event event);
+typedef ColorInputEventCallback = void Function(Color color, Event event);
 
 /// Signature for a function that creates a custom color picker selector for a
 /// given color.
@@ -184,7 +185,7 @@ class _WebColorPickerState extends State<WebColorPicker> {
 
   /// Unique identifier for the color input element.
   final String viewType = const Uuid().v4();
-  final inputElement = html.InputElement(type: colorInputElementType);
+  final inputElement = HTMLInputElement()..type = colorInputElementType;
 
   /// The currently selected color.
   ///
@@ -213,23 +214,19 @@ class _WebColorPickerState extends State<WebColorPicker> {
       inputElement.onInput.listen((event) {
         final inputElementValue = inputElement.value;
 
-        if (inputElementValue != null) {
-          final color = hexStringToColor(inputElementValue);
+        final color = hexStringToColor(inputElementValue);
 
-          widget.onInput?.call(color, event);
+        widget.onInput?.call(color, event);
 
-          selectedColor.value = color;
-        }
+        selectedColor.value = color;
       });
 
       inputElement.onChange.listen((event) {
         final inputElementValue = inputElement.value;
 
-        if (inputElementValue != null) {
-          final color = hexStringToColor(inputElementValue);
+        final color = hexStringToColor(inputElementValue);
 
-          widget.onChange?.call(color, event);
-        }
+        widget.onChange?.call(color, event);
       });
 
       /// Setting the width and height to `100%` ensures that the color input
