@@ -1,7 +1,7 @@
-/// It is assumed that all tests (with the exception of the non-web test) are
-/// run on web.
-///
-/// Non-web tests are tagged with [nonWebTestTag].
+// It is assumed that all tests (with the exception of the non-web test) are
+// run on web.
+//
+// Non-web tests are tagged with `nonWebTestTag`.
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';

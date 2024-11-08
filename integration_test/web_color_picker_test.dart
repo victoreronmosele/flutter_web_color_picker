@@ -1,9 +1,11 @@
+import 'dart:js_interop';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:web_color_picker/web_color_picker.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:universal_html/html.dart' as html;
+import 'package:web/web.dart';
 
 /// Signature for a function that creates a [WebColorPicker].
 typedef WebColorPickerCreator = WebColorPicker Function({
@@ -13,7 +15,7 @@ typedef WebColorPickerCreator = WebColorPicker Function({
 });
 
 abstract class OnColorInputEvent {
-  void call(Color color, html.Event event);
+  void call(Color color, Event event);
 }
 
 class MockOnColorInputEvent extends Mock implements OnColorInputEvent {}
@@ -38,21 +40,21 @@ void runColorInputEventsTest({
 
     await tester.pumpAndSettle();
 
-    final inputElement = html.document.querySelector(colorInputTypeSelector)
-        as html.InputElement;
+    final inputElement =
+        document.querySelector(colorInputTypeSelector) as HTMLInputElement;
 
     /// Change the color
     inputElement.value = '#ffff00';
 
     /// Trigger the input event
-    inputElement.dispatchEvent(html.Event('input'));
+    inputElement.dispatchEvent(Event('input'));
 
     await tester.pumpAndSettle();
 
     verify(() => onInputCallback.call(
         const Color(0xffffff00),
         any(
-            that: isA<html.Event>().having(
+            that: isA<Event>().having(
                 (event) => event.type, 'type', equals('input'))))).called(1);
   });
 
@@ -71,45 +73,46 @@ void runColorInputEventsTest({
 
     await tester.pumpAndSettle();
 
-    final inputElement = html.document.querySelector(colorInputTypeSelector)
-        as html.InputElement;
+    final inputElement =
+        document.querySelector(colorInputTypeSelector) as HTMLInputElement;
 
     /// Change the color
     inputElement.value = '#ffff00';
 
     /// Trigger the change event
-    inputElement.dispatchEvent(html.Event('change'));
+    inputElement.dispatchEvent(Event('change'));
 
     await tester.pumpAndSettle();
 
     verify(() => onChangeCallback.call(
         const Color(0xffffff00),
         any(
-            that: isA<html.Event>().having(
+            that: isA<Event>().having(
                 (event) => event.type, 'type', equals('change'))))).called(1);
   });
 
   testWidgets(
-      'when initial color is null, renders the color input element with black',
-      (tester) async {
-    await tester.pumpWidget(
-      Center(
-        child: webColorPickerCreator.call(),
-      ),
-    );
+    'when initial color is null, renders the color input element with black',
+    (tester) async {
+      await tester.pumpWidget(
+        Center(
+          child: webColorPickerCreator.call(),
+        ),
+      );
 
-    await tester.pumpAndSettle();
+      await tester.pumpAndSettle();
 
-    final inputElement = html.document.querySelector(colorInputTypeSelector)
-        as html.InputElement;
+      final inputElement =
+          document.querySelector(colorInputTypeSelector) as HTMLInputElement;
 
-    final inputElementValue = inputElement.value;
+      final inputElementValue = inputElement.value;
 
-    expect(
-      inputElementValue,
-      '#000000',
-    );
-  });
+      expect(
+        inputElementValue,
+        '#000000',
+      );
+    },
+  );
 
   testWidgets(
       'when passed an initial color, renders the color input element with the passed color',
@@ -124,8 +127,8 @@ void runColorInputEventsTest({
 
     await tester.pumpAndSettle();
 
-    final inputElement = html.document.querySelector(colorInputTypeSelector)
-        as html.InputElement;
+    final inputElement =
+        document.querySelector(colorInputTypeSelector) as HTMLInputElement;
 
     final inputElementValue = inputElement.value;
 
@@ -140,7 +143,7 @@ void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
   setUpAll(() {
-    registerFallbackValue(html.Event(''));
+    registerFallbackValue(Event(''));
   });
 
   group('WebColorPicker, ', () {
@@ -187,6 +190,8 @@ void main() {
         ),
       );
 
+      await tester.pumpAndSettle();
+
       final builderWidgetFinder = find.byKey(builderKey);
 
       expect(
@@ -194,14 +199,17 @@ void main() {
         findsWidgets,
       );
 
-      final htmlColorPicker = html.document
-          .querySelector(colorInputTypeSelector) as html.InputElement;
+      final inputElement =
+          document.querySelector(colorInputTypeSelector) as HTMLInputElement;
 
       bool clickEventTriggered = false;
 
-      htmlColorPicker.addEventListener('click', (event) {
-        clickEventTriggered = true;
-      });
+      inputElement.addEventListener(
+        'click',
+        (Event event) {
+          clickEventTriggered = true;
+        }.toJS,
+      );
 
       await tester.tap(builderWidgetFinder, warnIfMissed: false);
 
