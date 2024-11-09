@@ -123,6 +123,13 @@ WebColorPicker(
 
 See the [example](example) directory for a complete example.
 
+## Video Tutorial
+
+Watch the tutorial to learn how to use the Web Color Picker package in your Flutter web apps.
+
+[![Easily Integrate The Browser’s Color Picker In Flutter Web | web_color_picker](https://markdown-videos-api.jorgenkh.no/url?url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DFPHhQRXDBN8)](https://www.youtube.com/watch?v=FPHhQRXDBN8)
+
+
 ## Resources
 
 For more understanding on how the HTML color input (which this package uses) works, check out the following:
