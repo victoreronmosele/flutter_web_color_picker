@@ -9,3 +9,7 @@
 
 ## 1.0.4
 * Export the Event object.
+
+## 2.0.0
+* Migrate to package:web
+* Add tutorial video to README
